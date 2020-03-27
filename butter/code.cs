@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace butter
 {
@@ -25,7 +26,7 @@ namespace butter
 
         private List<Line> Lines = new List<Line>();
 
-        public void AddLine(string line = "K0-O1", string dllpath = "mydll.dll", 
+        public void AddLine(string line = "K0-O1", string dllpath = "mydll.dll",
             string classToEnter = "MyClass", string methodname = "myMethod")
         {
             Line n = new Line();
@@ -59,18 +60,23 @@ namespace butter
         {
 
             string[] lines = script.Split(
-            new[] { "\r\n", "\r", "\n", Environment.NewLine },
-            StringSplitOptions.None
-            );
+           new[] { "\r\n", "\r", "\n", Environment.NewLine },
+           StringSplitOptions.None
+           );
 
+            //Iterate through every line of the presented script
             foreach (string item in lines)
             {
-                string theline = item.Replace(" ", "");
+
+                //Iterate through every line registered into the Language
+                //string theline = item.Replace(" ", "");
                 foreach (Line i in l.GetLines())
                 {
+
                     List<string> unknown = new List<string>();
-                    int unknowncurrentnumber = 0;
+                    //int unknowncurrentnumber = 0;
                     string ll = "";
+
 
                     string[] indcom = i.line.Split('-');
                     foreach (string t in indcom)
@@ -78,163 +84,84 @@ namespace butter
                         t.Replace("-", "");
                     }
 
-
-                    string cache = theline;
-                    bool LastWasUnknown = false;
+                    //Iterate through every section of the registered line
+                    string cache = item;
+                    //bool LastWasUnknown = false;
+                    int dd = -1;
                     foreach (string m in indcom)
                     {
-
+                        dd++;
                         if (m.Contains("K"))
                         {
-                            if (LastWasUnknown == false)
-                            {
-                                string x = m.Replace("K", "");
-                                ll = ll + l.Keywords[Convert.ToInt32(x)];
-                            }
-                            else
-                            {
-                                string x = m.Replace("K", "");
+                            string xl = m.Replace("K", "");
+                            
 
-                                string o = cache.Substring(0, cache.IndexOf(l.Keywords[Convert.ToInt32(x)]) + 1).Replace(l.Keywords[Convert.ToInt32(x)], "");
-                                string result = o;
-                                foreach (string om in l.Keywords)
-                                {
-                                    if (o.Contains(om))
-                                    {
-                                        result = result.Replace(om, "");
-                                    }
-                                }
-                                foreach (string om in l.Operators)
-                                {
-                                    if (o.Contains(om))
-                                    {
-                                        result = result.Replace(om, "");
-                                    }
-                                }
-
-                                List<string> TheInputs = new List<string>();
-                                string[] que = result.Split(Convert.ToChar(l.VariableBacker));
-                                foreach (string e in que)
-                                {
-                                    if (e == l.VariableBacker || e == "")
-                                    {
-
-                                    }
-                                    else
-                                    {
-
-                                        TheInputs.Add(e.Replace(l.VariableBacker, ""));
-                                    }
-                                }
-
-
-                                ll = ll + TheInputs[unknown.Count];
-                                ll = ll + l.Keywords[Convert.ToInt32(x)];
-                                unknown.Add(TheInputs[unknown.Count]);
-                                LastWasUnknown = false;
-                            }
+                                ll = ll + l.Keywords[Convert.ToInt32(xl)];
+                            
+                            
                         }
-
                         if (m.Contains("O"))
-                        {
-                            if (LastWasUnknown == false)
                             {
-                                string x = m.Replace("O", "");
-                                ll = ll + l.Operators[Convert.ToInt32(x)];
+                                string xl = m.Replace("O", "");
+                               
+                                    ll = ll + l.Operators[Convert.ToInt32(xl)];
+                                
+                               
                             }
-                            else
-                            {
-                                string x = m.Replace("O", "");
-
-
-                                //int pFrom = cache.IndexOf(cache) + cache.Length;
-                                //int pTo = cache.LastIndexOf(l.Operators[Convert.ToInt32(x)]);
-                                //String result = cache.Substring(pFrom, pTo - pFrom);
-
-                                string o = cache.Substring(0, cache.IndexOf(l.Operators[Convert.ToInt32(x)]) + 1).Replace(l.Operators[Convert.ToInt32(x)], "");
-                                string result = o;
-                                foreach (string om in l.Keywords)
-                                {
-                                    if (o.Contains(om))
-                                    {
-                                        result = result.Replace(om, "");
-                                    }
-                                }
-                                foreach (string om in l.Operators)
-                                {
-                                    if (o.Contains(om))
-                                    {
-                                        result = result.Replace(om, "");
-                                    }
-                                }
-
-                                List<string> TheInputs = new List<string>();
-                                string[] que = result.Split(Convert.ToChar(l.VariableBacker));
-                                foreach (string e in que)
-                                {
-                                    if (e == l.VariableBacker || e == "")
-                                    {
-
-                                    }
-                                    else
-                                    {
-
-                                        TheInputs.Add(e.Replace(l.VariableBacker, ""));
-                                    }
-                                }
-
-
-                                ll = ll + TheInputs[unknown.Count];
-                                 ll = ll + l.Operators[Convert.ToInt32(x)];
-                                unknown.Add(TheInputs[unknown.Count]);
-                                LastWasUnknown = false;
-                            }
-                        }
-
                         if (m.Contains("?"))
-                        {
-                            //ll = ll + m;
-                            LastWasUnknown = true;
+                            {
+                            //LastWasUnknown = true;
                             //unknown.Add(m);
-                            unknowncurrentnumber = unknown.Count;
-                        }
+                            //unknowncurrentnumber = unknown.Count;
+                            string xl = m.Replace("?", "");
+                            List<string> s = new List<string>();
 
+                            string[] llll = cache.Split(' ');
+                            unknown.Add(llll[Convert.ToInt32(xl)]);
+                            ll = ll + llll[Convert.ToInt32(xl)];
+                        }
                     }
 
 
-                    if (ll == item.Replace(" ", "").Replace(l.VariableBacker, ""))
-                    {
-                        Assembly asm = Assembly.LoadFrom(i.DLLToRun);
-                        Type t = asm.GetType(i.DLLToRun.Replace(".dll", "") + "." + i.ClassToEnter);
-                        var methodInfo = t.GetMethod(i.MethodToRun, new Type[] { typeof(List<string>) });
-                        if (methodInfo == null)
+
+
+
+                        //Run the code behind the line of script code
+                        if (ll == item.Replace(" ", "").Replace(l.VariableBacker, ""))
                         {
-                            // never throw generic Exception - replace this with some other exception type
-                            throw new Exception("Could not find " + l.LanguageName + " method.");
+                            Assembly asm = Assembly.LoadFrom(i.DLLToRun);
+                            Type t = asm.GetType(i.DLLToRun.Replace(".dll", "") + "." + i.ClassToEnter);
+                            var methodInfo = t.GetMethod(i.MethodToRun, new Type[] { typeof(List<string>) });
+                            if (methodInfo == null)
+                            {
+                                // never throw generic Exception - replace this with some other exception type
+                                throw new Exception("Could not find " + l.LanguageName + " method.");
+                            }
+
+
+                            //unknown.Add("yo");
+
+
+                            var o = Activator.CreateInstance(t, null);
+
+                            object[] parameters = new object[1];
+                            parameters[0] = unknown;
+
+                            var r = methodInfo.Invoke(o, parameters);
                         }
 
 
-                        //unknown.Add("yo");
 
-
-                        var o = Activator.CreateInstance(t, null);
-
-                        object[] parameters = new object[1];
-                        parameters[0] = unknown;
-
-                        var r = methodInfo.Invoke(o, parameters);
 
                     }
-
-
 
                 }
 
-            }
 
+            }
         }
+
+
+
     }
 
-
-
-}

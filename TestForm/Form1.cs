@@ -25,18 +25,21 @@ namespace TestForm
             //l.Keywords.Add("int");
             l.Keywords.Add("rgtisadgjfdgfd");
             l.Keywords.Add("RunVoid();");
+            l.Keywords.Add("ButterLang");
             //l.Keywords.Add("int");
             l.Operators.Add("=");
             l.Operators.Add("(");
             l.Operators.Add(")");
+            l.Operators.Add("#");
             //l.Operators.Add("{");
             //l.Operators.Add("}");
-           
+
             l.LanguageName = "ButterLang";
             //l.AddLine("K0", "test.dll", "TheClass", "TheVoid");
             //l.AddLine("K1", "test.dll", "TheClass", "TheVoid");
             //l.AddLine("K0-?-O0-K1", "test.dll", "TheClass", "TheVoid");
-            l.AddLine("K0-O1-?-O0-?-O2", "test.dll", "TheClass", "IfStatement");
+            l.AddLine("K0-O1-?2-O0-?4-O2", "test.dll", "TheClass", "IfStatement");
+            //l.AddLine("O3-K2-?", "test.dll", "TheClass", "TheVoid");
             LanguageCompiler.ExecuteScript(l, File.ReadAllText("script.txt"));
         }
     }
