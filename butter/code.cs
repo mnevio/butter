@@ -21,6 +21,8 @@ namespace butter
         public List<string> Keywords = new List<string>();
         public List<string> Operators = new List<string>();
 
+        public string VariableBacker = "_";
+
         private List<Line> Lines = new List<Line>();
 
         public void AddLine(string line = "K0-O1", string dllpath = "mydll.dll", 
@@ -93,21 +95,42 @@ namespace butter
                             {
                                 string x = m.Replace("K", "");
 
-                                string o = cache.Substring(0, cache.IndexOf(l.Operators[Convert.ToInt32(x)]) + 1).Replace(l.Operators[Convert.ToInt32(x)], "");
-                                string result = "";
+                                string o = cache.Substring(0, cache.IndexOf(l.Keywords[Convert.ToInt32(x)]) + 1).Replace(l.Keywords[Convert.ToInt32(x)], "");
+                                string result = o;
                                 foreach (string om in l.Keywords)
                                 {
                                     if (o.Contains(om))
                                     {
-                                        result = o.Replace(om, "");
+                                        result = result.Replace(om, "");
+                                    }
+                                }
+                                foreach (string om in l.Operators)
+                                {
+                                    if (o.Contains(om))
+                                    {
+                                        result = result.Replace(om, "");
+                                    }
+                                }
+
+                                List<string> TheInputs = new List<string>();
+                                string[] que = result.Split(Convert.ToChar(l.VariableBacker));
+                                foreach (string e in que)
+                                {
+                                    if (e == l.VariableBacker || e == "")
+                                    {
+
+                                    }
+                                    else
+                                    {
+
+                                        TheInputs.Add(e.Replace(l.VariableBacker, ""));
                                     }
                                 }
 
 
-
-                                ll = ll + result;
+                                ll = ll + TheInputs[unknown.Count];
                                 ll = ll + l.Keywords[Convert.ToInt32(x)];
-                                unknown.Add(result);
+                                unknown.Add(TheInputs[unknown.Count]);
                                 LastWasUnknown = false;
                             }
                         }
@@ -129,20 +152,41 @@ namespace butter
                                 //String result = cache.Substring(pFrom, pTo - pFrom);
 
                                 string o = cache.Substring(0, cache.IndexOf(l.Operators[Convert.ToInt32(x)]) + 1).Replace(l.Operators[Convert.ToInt32(x)], "");
-                                string result = "";
+                                string result = o;
                                 foreach (string om in l.Keywords)
                                 {
                                     if (o.Contains(om))
                                     {
-                                        result = o.Replace(om, "");
+                                        result = result.Replace(om, "");
+                                    }
+                                }
+                                foreach (string om in l.Operators)
+                                {
+                                    if (o.Contains(om))
+                                    {
+                                        result = result.Replace(om, "");
                                     }
                                 }
 
-                               
+                                List<string> TheInputs = new List<string>();
+                                string[] que = result.Split(Convert.ToChar(l.VariableBacker));
+                                foreach (string e in que)
+                                {
+                                    if (e == l.VariableBacker || e == "")
+                                    {
 
-                                ll = ll + result;
+                                    }
+                                    else
+                                    {
+
+                                        TheInputs.Add(e.Replace(l.VariableBacker, ""));
+                                    }
+                                }
+
+
+                                ll = ll + TheInputs[unknown.Count];
                                  ll = ll + l.Operators[Convert.ToInt32(x)];
-                                unknown.Add(result);
+                                unknown.Add(TheInputs[unknown.Count]);
                                 LastWasUnknown = false;
                             }
                         }
@@ -158,7 +202,7 @@ namespace butter
                     }
 
 
-                    if (ll == item.Replace(" ", ""))
+                    if (ll == item.Replace(" ", "").Replace(l.VariableBacker, ""))
                     {
                         Assembly asm = Assembly.LoadFrom(i.DLLToRun);
                         Type t = asm.GetType(i.DLLToRun.Replace(".dll", "") + "." + i.ClassToEnter);

@@ -15,7 +15,7 @@ namespace test
         }
         public void IfStatement(List<string> input)
         {
-            if (input[1] == input[2])
+            if (input[0] == input[1])
             {
                 MessageBox.Show("Hi");
             }

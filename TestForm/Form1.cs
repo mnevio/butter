@@ -35,7 +35,7 @@ namespace TestForm
             l.LanguageName = "ButterLang";
             //l.AddLine("K0", "test.dll", "TheClass", "TheVoid");
             //l.AddLine("K1", "test.dll", "TheClass", "TheVoid");
-            l.AddLine("K0-?-O0-K1", "test.dll", "TheClass", "TheVoid");
+            //l.AddLine("K0-?-O0-K1", "test.dll", "TheClass", "TheVoid");
             l.AddLine("K0-O1-?-O0-?-O2", "test.dll", "TheClass", "IfStatement");
             LanguageCompiler.ExecuteScript(l, File.ReadAllText("script.txt"));
         }
