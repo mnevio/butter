@@ -116,7 +116,7 @@ namespace butter
                             string xl = m.Replace("?", "");
                             List<string> s = new List<string>();
 
-                            string[] llll = cache.Split(' ');
+                            string[] llll = cache.Split(Convert.ToChar(l.VariableBacker));
                             unknown.Add(llll[Convert.ToInt32(xl)]);
                             ll = ll + llll[Convert.ToInt32(xl)];
                         }

@@ -26,6 +26,9 @@ namespace TestForm
             l.Keywords.Add("rgtisadgjfdgfd");
             l.Keywords.Add("RunVoid();");
             l.Keywords.Add("ButterLang");
+
+            l.VariableBacker = " ";
+
             //l.Keywords.Add("int");
             l.Operators.Add("=");
             l.Operators.Add("(");
