@@ -12,7 +12,7 @@ namespace butter
     {
         public static string ReturnVersion()
         {
-            return "Butter Scripting Engine v:1.0";
+            return "Butter Scripting Engine v:1.2.1";
         }
     }
 
@@ -202,12 +202,21 @@ namespace butter
                         {
                             Assembly asm = Assembly.LoadFrom(i.DLLToRun);
                             Type t = asm.GetType(i.DLLToRun.Replace(".dll", "") + "." + i.ClassToEnter);
-                            var methodInfo = t.GetMethod(i.MethodToRun, new Type[] { typeof(List<string>) });
-                            if (methodInfo == null)
+                            MethodInfo methodInfo;
+                            try
                             {
-                                // never throw generic Exception - replace this with some other exception type
-                                throw new Exception("Could not find " + l.LanguageName + " method.");
+                                methodInfo = t.GetMethod(i.MethodToRun, new Type[] { typeof(List<string>) });
+                                if (methodInfo == null)
+                                {
+                                    // never throw generic Exception - replace this with some other exception type
+                                    throw new Exception("Could not find " + l.LanguageName + " method.");
+                                }
                             }
+                            catch (Exception ex)
+                            {
+                                throw new Exception(ex.ToString());
+                            }
+                           
 
 
                             //unknown.Add("yo");
@@ -227,11 +236,19 @@ namespace butter
                         {
                             Assembly asm = Assembly.LoadFrom(i.DLLToRun);
                             Type t = asm.GetType(i.DLLToRun.Replace(".dll", "") + "." + i.ClassToEnter);
-                            var methodInfo = t.GetMethod(i.MethodToRun, new Type[] { typeof(List<string>) });
-                            if (methodInfo == null)
+                            MethodInfo methodInfo;
+                            try
                             {
-                                // never throw generic Exception - replace this with some other exception type
-                                throw new Exception("Could not find " + l.LanguageName + " method.");
+                                methodInfo = t.GetMethod(i.MethodToRun, new Type[] { typeof(List<string>) });
+                                if (methodInfo == null)
+                                {
+                                    // never throw generic Exception - replace this with some other exception type
+                                    throw new Exception("Could not find " + l.LanguageName + " method.");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                throw new Exception(ex.ToString());
                             }
 
 

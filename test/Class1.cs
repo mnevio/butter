@@ -11,7 +11,7 @@ namespace test
     {
         public void TheVoid(List<string> hi)
         {
-            MessageBox.Show(hi[1]);          
+            MessageBox.Show("Hi");          
         }
         public void IfStatement(List<string> input)
         {
