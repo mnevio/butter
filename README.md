@@ -1,4 +1,4 @@
-**Butter: Scripting Language Engine**<br>
+**Butter: Scripting Language Engine *1.2.0***<br>
 https://www.nuget.org/packages/Butter/1.1.0
 <br>
 Create scripting languages easily with Butter!
