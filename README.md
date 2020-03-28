@@ -1,5 +1,5 @@
-**Butter: Scripting Language Engine**<br>
-https://www.nuget.org/packages/Butter/1.1.0
+**Butter: Scripting Language Engine *1.2.0***<br>
+https://www.nuget.org/packages/Butter/1.2.0
 <br>
 Create scripting languages easily with Butter!
 Butter is designed to handle the hardest part of making your own scripting language: the *syntax*.
