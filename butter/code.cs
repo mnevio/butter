@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace butter
 {
@@ -56,7 +57,7 @@ namespace butter
 
     public static class LanguageCompiler
     {
-        public static void ExecuteScript(Language l, string script)
+        public static void ExecuteScript(Language l, string script, string compilerLogPath = "butterlogs/")
         {
 
             string[] lines = script.Split(
@@ -65,6 +66,7 @@ namespace butter
            );
 
             //Iterate through every line of the presented script
+            bool FoundRightSyntaxLine = false;
             foreach (string item in lines)
             {
 
@@ -72,213 +74,225 @@ namespace butter
                 //string theline = item.Replace(" ", "");
                 foreach (Line i in l.GetLines())
                 {
-
-                    List<string> unknown = new List<string>();
-                    //int unknowncurrentnumber = 0;
-                    string ll = "";
-
-
-                    string[] indcom = i.line.Split('-');
-                    foreach (string t in indcom)
+                    if (FoundRightSyntaxLine == false)
                     {
-                        t.Replace("-", "");
-                    }
-
-                    //Iterate through every section of the registered line
-                    string cache = item;
-                    //bool LastWasUnknown = false;
-                    int dd = -1;
-                    foreach (string m in indcom)
-                    {
-                        dd++;
-                        if (m.Contains("K"))
+                        if (!Directory.Exists(compilerLogPath))
                         {
-                            string xl = m.Replace("K", "");
-                            
+                            Directory.CreateDirectory(compilerLogPath);
+                        }
+                        List<string> unknown = new List<string>();
+                        //int unknowncurrentnumber = 0;
+                        string ll = "";
+
+
+                        string[] indcom = i.line.Split('-');
+
+
+                        //Iterate through every section of the registered line
+                        string cache = item;
+                        //bool LastWasUnknown = false;
+                        int dd = -1;
+                        foreach (string m in indcom)
+                        {
+                            dd++;
+                            if (m.Contains("K"))
+                            {
+                                string xl = m.Replace("K", "");
+
 
                                 ll = ll + l.Keywords[Convert.ToInt32(xl)];
-                            
-                            
-                        }
-                        if (m.Contains("O"))
+
+
+                            }
+                            if (m.Contains("O"))
                             {
                                 string xl = m.Replace("O", "");
-                               
-                                    ll = ll + l.Operators[Convert.ToInt32(xl)];
-                                
-                               
-                            }
-                        if (m.Contains("?"))
-                            {
-                            //LastWasUnknown = true;
-                            //unknown.Add(m);
-                            //unknowncurrentnumber = unknown.Count;
-                            if (l.VariableBacker != "")
-                            {
-                                string xl = m.Replace("?", "");
-                                List<string> s = new List<string>();
 
-                                string[] llll = cache.Split(Convert.ToChar(l.VariableBacker));
-                                unknown.Add(llll[Convert.ToInt32(xl)]);
-                                ll = ll + llll[Convert.ToInt32(xl)];
-                            }
-                            else
-                            {
-                                string BeforeOneSyntax = indcom[dd - 1];
-                                string NextOneSyntax = indcom[dd+1];
-
-                                string BeforeOne = "";
-                                string NextOne = "";
-
-                                if (BeforeOneSyntax.Contains("K"))
-                                {
-
-                                    string xm = BeforeOneSyntax.Replace("K", "");
-                                    BeforeOne = l.Keywords[Convert.ToInt32(xm)];
-
-                                }
-                                else if (BeforeOneSyntax.Contains("O"))
-                                {
-                                    string xm = BeforeOneSyntax.Replace("O", "");
-                                    BeforeOne = l.Operators[Convert.ToInt32(xm)];
-                                }
-                                else if (BeforeOneSyntax.Contains("?"))
-                                {
-                                    throw new Exception("Error: cannot have two user inputs next to each other without a variable backer!");
-                                }
-
-                                if (NextOneSyntax.Contains("K"))
-                                {
-
-                                    string xm = NextOneSyntax.Replace("K", "");
-                                    NextOne = l.Keywords[Convert.ToInt32(xm)];
-
-                                }
-                                else if (NextOneSyntax.Contains("O"))
-                                {
-                                    string xm = NextOneSyntax.Replace("O", "");
-                                    NextOne = l.Operators[Convert.ToInt32(xm)];
-                                }
-                                else if (NextOneSyntax.Contains("?"))
-                                {
-                                    throw new Exception("Error: cannot have two user inputs next to each other without a variable backer!");
-                                }
-
-                                string ccache = cache.Replace(ll, "");
-
-                                string result = ccache.Substring(0, ccache.IndexOf(NextOne));
-                                foreach (string a in l.Keywords)
-                                {
-                                    result = result.Replace(a, "");
-                                }
-                                foreach (string a in l.Operators)
-                                {
-                                    result = result.Replace(a, "");
-                                }
-
-
-
-                                unknown.Add(result);
-                                ll = ll + result;
-
-                                //int start = ll.LastIndexOf(BeforeOne);
-                                //string finder = ll + NextOne;
-                                //int pTo = finder.LastIndexOf(NextOne);
-
-                                // string result = finder.Substring(start, pTo - start);
+                                ll = ll + l.Operators[Convert.ToInt32(xl)];
 
 
                             }
-                            
+                            if (m.Contains("?"))
+                            {
+
+                                //LastWasUnknown = true;
+                                //unknown.Add(m);
+                                //unknowncurrentnumber = unknown.Count;
+                                try
+                                {
+                                    if (l.VariableBacker != "")
+                                    {
+                                        string xl = m.Replace("?", "");
+                                        List<string> s = new List<string>();
+
+                                        string[] llll = cache.Split(Convert.ToChar(l.VariableBacker));
+                                        unknown.Add(llll[Convert.ToInt32(xl)]);
+                                        ll = ll + llll[Convert.ToInt32(xl)];
+                                    }
+                                    else
+                                    {
+                                        string BeforeOneSyntax = indcom[dd - 1];
+                                        string NextOneSyntax = indcom[dd + 1];
+
+                                        string BeforeOne = "";
+                                        string NextOne = "";
+
+                                        if (BeforeOneSyntax.Contains("K"))
+                                        {
+
+                                            string xm = BeforeOneSyntax.Replace("K", "");
+                                            BeforeOne = l.Keywords[Convert.ToInt32(xm)];
+
+                                        }
+                                        else if (BeforeOneSyntax.Contains("O"))
+                                        {
+                                            string xm = BeforeOneSyntax.Replace("O", "");
+                                            BeforeOne = l.Operators[Convert.ToInt32(xm)];
+                                        }
+                                        else if (BeforeOneSyntax.Contains("?"))
+                                        {
+                                            throw new Exception("Error: cannot have two user inputs next to each other without a variable backer!");
+                                        }
+
+                                        if (NextOneSyntax.Contains("K"))
+                                        {
+
+                                            string xm = NextOneSyntax.Replace("K", "");
+                                            NextOne = l.Keywords[Convert.ToInt32(xm)];
+
+                                        }
+                                        else if (NextOneSyntax.Contains("O"))
+                                        {
+                                            string xm = NextOneSyntax.Replace("O", "");
+                                            NextOne = l.Operators[Convert.ToInt32(xm)];
+                                        }
+                                        else if (NextOneSyntax.Contains("?"))
+                                        {
+                                            throw new Exception("Error: cannot have two user inputs next to each other without a variable backer!");
+                                        }
+
+                                        string ccache = cache.Replace(ll, "");
+
+                                        string result = ccache.Substring(0, ccache.IndexOf(NextOne));
+                                        foreach (string a in l.Keywords)
+                                        {
+                                            result = result.Replace(a, "");
+                                        }
+                                        foreach (string a in l.Operators)
+                                        {
+                                            result = result.Replace(a, "");
+                                        }
+
+
+
+                                        unknown.Add(result);
+                                        ll = ll + result;
+
+                                        //int start = ll.LastIndexOf(BeforeOne);
+                                        //string finder = ll + NextOne;
+                                        //int pTo = finder.LastIndexOf(NextOne);
+
+                                        // string result = finder.Substring(start, pTo - start);
+
+
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    File.WriteAllText(compilerLogPath + Guid.NewGuid().ToString() + ".log", ex.ToString());
+                                }
+
+                            }
                         }
-                    }
 
-
-
-
-
-                    //Run the code behind the line of script code
-                    if (l.VariableBacker == "")
-                    {
-                        if (ll.Replace(" ", "") == item.Replace(" ", ""))
+                        //Run the code behind the line of script code
+                        if (l.VariableBacker == "")
                         {
-                            Assembly asm = Assembly.LoadFrom(i.DLLToRun);
-                            Type t = asm.GetType(i.DLLToRun.Replace(".dll", "") + "." + i.ClassToEnter);
-                            MethodInfo methodInfo;
-                            try
+                            if (ll.Replace(" ", "") == item.Replace(" ", ""))
                             {
-                                methodInfo = t.GetMethod(i.MethodToRun, new Type[] { typeof(List<string>) });
-                                if (methodInfo == null)
+                                FoundRightSyntaxLine = true;
+                                Assembly asm = Assembly.LoadFrom(i.DLLToRun);
+                                Type t = asm.GetType(i.DLLToRun.Replace(".dll", "") + "." + i.ClassToEnter);
+                                MethodInfo methodInfo;
+                                try
                                 {
-                                    // never throw generic Exception - replace this with some other exception type
-                                    throw new Exception("Could not find " + l.LanguageName + " method.");
+                                    methodInfo = t.GetMethod(i.MethodToRun, new Type[] { typeof(List<string>) });
+                                    if (methodInfo == null)
+                                    {
+                                        // never throw generic Exception - replace this with some other exception type
+                                        throw new Exception("Could not find " + l.LanguageName + " method.");
+                                    }
                                 }
+                                catch (Exception ex)
+                                {
+                                    throw new Exception(ex.ToString());
+                                }
+
+
+
+                                //unknown.Add("yo");
+
+
+                                var o = Activator.CreateInstance(t, null);
+
+                                object[] parameters = new object[1];
+                                parameters[0] = unknown;
+
+                                var r = methodInfo.Invoke(o, parameters);
+
+                                FoundRightSyntaxLine = false;
                             }
-                            catch (Exception ex)
+                        }
+                        else
+                        {
+                            if (ll.Replace(" ", "") == item.Replace(l.VariableBacker, "").Replace(" ", ""))
                             {
-                                throw new Exception(ex.ToString());
+                                FoundRightSyntaxLine = true;
+                                Assembly asm = Assembly.LoadFrom(i.DLLToRun);
+                                Type t = asm.GetType(i.DLLToRun.Replace(".dll", "") + "." + i.ClassToEnter);
+                                MethodInfo methodInfo;
+                                try
+                                {
+                                    methodInfo = t.GetMethod(i.MethodToRun, new Type[] { typeof(List<string>) });
+                                    if (methodInfo == null)
+                                    {
+                                        // never throw generic Exception - replace this with some other exception type
+                                        throw new Exception("Could not find " + l.LanguageName + " method.");
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    throw new Exception(ex.ToString());
+                                }
+
+
+                                //unknown.Add("yo");
+
+
+                                var o = Activator.CreateInstance(t, null);
+
+                                object[] parameters = new object[1];
+                                parameters[0] = unknown;
+
+                                var r = methodInfo.Invoke(o, parameters);
+                                FoundRightSyntaxLine = false;
                             }
-                           
-
-
-                            //unknown.Add("yo");
-
-
-                            var o = Activator.CreateInstance(t, null);
-
-                            object[] parameters = new object[1];
-                            parameters[0] = unknown;
-
-                            var r = methodInfo.Invoke(o, parameters);
                         }
                     }
                     else
                     {
-                        if (ll.Replace(" ", "") == item.Replace(l.VariableBacker, "").Replace(" ", ""))
-                        {
-                            Assembly asm = Assembly.LoadFrom(i.DLLToRun);
-                            Type t = asm.GetType(i.DLLToRun.Replace(".dll", "") + "." + i.ClassToEnter);
-                            MethodInfo methodInfo;
-                            try
-                            {
-                                methodInfo = t.GetMethod(i.MethodToRun, new Type[] { typeof(List<string>) });
-                                if (methodInfo == null)
-                                {
-                                    // never throw generic Exception - replace this with some other exception type
-                                    throw new Exception("Could not find " + l.LanguageName + " method.");
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                throw new Exception(ex.ToString());
-                            }
-
-
-                            //unknown.Add("yo");
-
-
-                            var o = Activator.CreateInstance(t, null);
-
-                            object[] parameters = new object[1];
-                            parameters[0] = unknown;
-
-                            var r = methodInfo.Invoke(o, parameters);
-                        }
-                    }
-                        
-
-
-
 
                     }
-
+       
                 }
 
-
             }
+
+
         }
-
-
-
     }
+
+
+
+}
 
