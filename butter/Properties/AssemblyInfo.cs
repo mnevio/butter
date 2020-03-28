@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Butter (Scripting Engine)")]
+[assembly: AssemblyTitle("Butter")]
 [assembly: AssemblyDescription("Make scripting languages easily in C#! Butter mainly handles the syntax of the language.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("UniBirth Team")]
