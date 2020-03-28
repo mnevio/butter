@@ -113,12 +113,81 @@ namespace butter
                             //LastWasUnknown = true;
                             //unknown.Add(m);
                             //unknowncurrentnumber = unknown.Count;
-                            string xl = m.Replace("?", "");
-                            List<string> s = new List<string>();
+                            if (l.VariableBacker != "")
+                            {
+                                string xl = m.Replace("?", "");
+                                List<string> s = new List<string>();
 
-                            string[] llll = cache.Split(Convert.ToChar(l.VariableBacker));
-                            unknown.Add(llll[Convert.ToInt32(xl)]);
-                            ll = ll + llll[Convert.ToInt32(xl)];
+                                string[] llll = cache.Split(Convert.ToChar(l.VariableBacker));
+                                unknown.Add(llll[Convert.ToInt32(xl)]);
+                                ll = ll + llll[Convert.ToInt32(xl)];
+                            }
+                            else
+                            {
+                                string BeforeOneSyntax = indcom[dd - 1];
+                                string NextOneSyntax = indcom[dd+1];
+
+                                string BeforeOne = "";
+                                string NextOne = "";
+
+                                if (BeforeOneSyntax.Contains("K"))
+                                {
+
+                                    string xm = BeforeOneSyntax.Replace("K", "");
+                                    BeforeOne = l.Keywords[Convert.ToInt32(xm)];
+
+                                }
+                                else if (BeforeOneSyntax.Contains("O"))
+                                {
+                                    string xm = BeforeOneSyntax.Replace("O", "");
+                                    BeforeOne = l.Operators[Convert.ToInt32(xm)];
+                                }
+                                else if (BeforeOneSyntax.Contains("?"))
+                                {
+                                    throw new Exception("Error: cannot have two user inputs next to each other without a variable backer!");
+                                }
+
+                                if (NextOneSyntax.Contains("K"))
+                                {
+
+                                    string xm = NextOneSyntax.Replace("K", "");
+                                    NextOne = l.Keywords[Convert.ToInt32(xm)];
+
+                                }
+                                else if (NextOneSyntax.Contains("O"))
+                                {
+                                    string xm = NextOneSyntax.Replace("O", "");
+                                    NextOne = l.Operators[Convert.ToInt32(xm)];
+                                }
+                                else if (NextOneSyntax.Contains("?"))
+                                {
+                                    throw new Exception("Error: cannot have two user inputs next to each other without a variable backer!");
+                                }
+
+                                string ccache = cache.Replace(ll, "");
+
+                                string result = ccache.Substring(0, ccache.IndexOf(NextOne) + 1);
+                                foreach (string a in l.Keywords)
+                                {
+                                    result = result.Replace(a, "");
+                                }
+                                foreach (string a in l.Operators)
+                                {
+                                    result = result.Replace(a, "");
+                                }
+
+                                unknown.Add(result);
+                                ll = ll + result;
+
+                                //int start = ll.LastIndexOf(BeforeOne);
+                                //string finder = ll + NextOne;
+                                //int pTo = finder.LastIndexOf(NextOne);
+
+                                // string result = finder.Substring(start, pTo - start);
+
+
+                            }
+                            
                         }
                     }
 
@@ -126,7 +195,34 @@ namespace butter
 
 
 
-                        //Run the code behind the line of script code
+                    //Run the code behind the line of script code
+                    if (l.VariableBacker == "")
+                    {
+                        if (ll == item.Replace(" ", ""))
+                        {
+                            Assembly asm = Assembly.LoadFrom(i.DLLToRun);
+                            Type t = asm.GetType(i.DLLToRun.Replace(".dll", "") + "." + i.ClassToEnter);
+                            var methodInfo = t.GetMethod(i.MethodToRun, new Type[] { typeof(List<string>) });
+                            if (methodInfo == null)
+                            {
+                                // never throw generic Exception - replace this with some other exception type
+                                throw new Exception("Could not find " + l.LanguageName + " method.");
+                            }
+
+
+                            //unknown.Add("yo");
+
+
+                            var o = Activator.CreateInstance(t, null);
+
+                            object[] parameters = new object[1];
+                            parameters[0] = unknown;
+
+                            var r = methodInfo.Invoke(o, parameters);
+                        }
+                    }
+                    else
+                    {
                         if (ll == item.Replace(" ", "").Replace(l.VariableBacker, ""))
                         {
                             Assembly asm = Assembly.LoadFrom(i.DLLToRun);
@@ -149,6 +245,8 @@ namespace butter
 
                             var r = methodInfo.Invoke(o, parameters);
                         }
+                    }
+                        
 
 
 
