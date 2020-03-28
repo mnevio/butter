@@ -198,7 +198,7 @@ namespace butter
                     //Run the code behind the line of script code
                     if (l.VariableBacker == "")
                     {
-                        if (ll == item.Replace(" ", ""))
+                        if (ll == item)
                         {
                             Assembly asm = Assembly.LoadFrom(i.DLLToRun);
                             Type t = asm.GetType(i.DLLToRun.Replace(".dll", "") + "." + i.ClassToEnter);

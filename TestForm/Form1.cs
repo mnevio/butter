@@ -22,39 +22,49 @@ namespace TestForm
         private void Form1_Load(object sender, EventArgs e)
         {
             Language l = new Language();
-            //l.Keywords.Add("int");
-            l.Keywords.Add("rgtisadgjfdgfd");
-            l.Keywords.Add("RunVoid();");
-            l.Keywords.Add("ButterLang");
-
             l.VariableBacker = "";
 
-            //l.Keywords.Add("int");
+            l.LanguageName = "UniLang";
+
+            #region Keywords
+            l.Keywords.Add("var");
+            l.Keywords.Add("as");
+            l.Keywords.Add("string");
+            l.Keywords.Add("integer");
+            l.Keywords.Add("boolean");
+            l.Keywords.Add("floatingpoint");
+            l.Keywords.Add("if");
+            l.Keywords.Add("on");
+            l.Keywords.Add("other");
+            l.Keywords.Add("debug");
+            l.Keywords.Add("msgraw");
+            l.Keywords.Add("msgdrawn");
+            #endregion
+
+            #region Operators
             l.Operators.Add("=");
+            l.Operators.Add(".");
+            l.Operators.Add(",");
             l.Operators.Add("(");
             l.Operators.Add(")");
-            l.Operators.Add("#");
-            //l.Operators.Add("{");
-            //l.Operators.Add("}");
+            l.Operators.Add("{");
+            l.Operators.Add("}");
+            l.Operators.Add(";");
+            l.Operators.Add("+");
+            l.Operators.Add("-");
+            l.Operators.Add("?");
+            #endregion
 
-            l.LanguageName = "ButterLang";
-            //l.AddLine("K0", "test.dll", "TheClass", "TheVoid");
-            //l.AddLine("K1", "test.dll", "TheClass", "TheVoid");
-            //l.AddLine("K0-?-O0-K1", "test.dll", "TheClass", "TheVoid");
-            //List<string> s1 = new List<string>();
-            //s1.Add("test.dll");
-            //List<string> s2 = new List<string>();
-            //s2.Add("TheClass");
-            //List<string> s3 = new List<string>();
-           // s3.Add("IfStatement");
+            #region Lines
+            l.AddLine("K9-O1-K10-O3-?-O4-O7",
+                "unilang.dll",
+                "Methods",
+                "msgraw");
 
-            l.AddLine("K0-O1-?2-O0-?4-O2", 
-                "test.dll",
-                "TheClass",
-                "IfStatement");
+            #endregion
 
-            //l.AddLine("O3-K2-?", "test.dll", "TheClass", "TheVoid");
-            LanguageCompiler.ExecuteScript(l, File.ReadAllText("script.txt"));
+            LanguageCompiler.ExecuteScript(l,
+                File.ReadAllText("script.txt"));
         }
     }
 }
