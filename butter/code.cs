@@ -232,7 +232,7 @@ namespace butter
                     }
                     else
                     {
-                        if (ll == item.Replace(" ", "").Replace(l.VariableBacker, ""))
+                        if (ll == item.Replace(l.VariableBacker, ""))
                         {
                             Assembly asm = Assembly.LoadFrom(i.DLLToRun);
                             Type t = asm.GetType(i.DLLToRun.Replace(".dll", "") + "." + i.ClassToEnter);

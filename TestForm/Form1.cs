@@ -21,50 +21,7 @@ namespace TestForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Language l = new Language();
-            l.VariableBacker = "";
-
-            l.LanguageName = "UniLang";
-
-            #region Keywords
-            l.Keywords.Add("var");
-            l.Keywords.Add("as");
-            l.Keywords.Add("string");
-            l.Keywords.Add("integer");
-            l.Keywords.Add("boolean");
-            l.Keywords.Add("floatingpoint");
-            l.Keywords.Add("if");
-            l.Keywords.Add("on");
-            l.Keywords.Add("other");
-            l.Keywords.Add("debug");
-            l.Keywords.Add("msgraw");
-            l.Keywords.Add("msgdrawn");
-            #endregion
-
-            #region Operators
-            l.Operators.Add("=");
-            l.Operators.Add(".");
-            l.Operators.Add(",");
-            l.Operators.Add("(");
-            l.Operators.Add(")");
-            l.Operators.Add("{");
-            l.Operators.Add("}");
-            l.Operators.Add(";");
-            l.Operators.Add("+");
-            l.Operators.Add("-");
-            l.Operators.Add("?");
-            #endregion
-
-            #region Lines
-            l.AddLine("K9-O1-K10-O3-?-O4-O7",
-                "unilang.dll",
-                "Methods",
-                "msgraw");
-
-            #endregion
-
-            LanguageCompiler.ExecuteScript(l,
-                File.ReadAllText("GameData/dim/common/script.lang"));
+    
 
             
         }
