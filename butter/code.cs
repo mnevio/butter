@@ -166,7 +166,7 @@ namespace butter
 
                                 string ccache = cache.Replace(ll, "");
 
-                                string result = ccache.Substring(0, ccache.IndexOf(NextOne) + 1);
+                                string result = ccache.Substring(0, ccache.IndexOf(NextOne));
                                 foreach (string a in l.Keywords)
                                 {
                                     result = result.Replace(a, "");
@@ -175,6 +175,8 @@ namespace butter
                                 {
                                     result = result.Replace(a, "");
                                 }
+
+
 
                                 unknown.Add(result);
                                 ll = ll + result;
@@ -198,7 +200,7 @@ namespace butter
                     //Run the code behind the line of script code
                     if (l.VariableBacker == "")
                     {
-                        if (ll == item)
+                        if (ll.Replace(" ", "") == item.Replace(" ", ""))
                         {
                             Assembly asm = Assembly.LoadFrom(i.DLLToRun);
                             Type t = asm.GetType(i.DLLToRun.Replace(".dll", "") + "." + i.ClassToEnter);
@@ -232,7 +234,7 @@ namespace butter
                     }
                     else
                     {
-                        if (ll == item.Replace(l.VariableBacker, ""))
+                        if (ll.Replace(" ", "") == item.Replace(l.VariableBacker, "").Replace(" ", ""))
                         {
                             Assembly asm = Assembly.LoadFrom(i.DLLToRun);
                             Type t = asm.GetType(i.DLLToRun.Replace(".dll", "") + "." + i.ClassToEnter);
