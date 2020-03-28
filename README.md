@@ -10,4 +10,5 @@ Butter is designed to handle the hardest part of making your own scripting langu
 ***Project:TestForm*** - The test host to use Butter & the backend<br>
 <br>
 <br>
-Currently only for .NET Framework 4.8, anyone who uses Butter will have to downgrade it to other versions for use.
+Currently only for .NET Framework 4.8, anyone who uses Butter will have to downgrade it to other versions for use.<br>
+Video tutorial coming soon!
