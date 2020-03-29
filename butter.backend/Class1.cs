@@ -9,7 +9,10 @@ namespace butter.backend
 {
     public class Backend
     {
-        public static void Transfer(List<string> inputs, 
+
+        private List<string> VariableTypes = new List<string>();
+
+        public static void AssemblyTransfer(List<string> inputs, 
             string AssemblyPath, 
             string Class, 
             string Method)
@@ -44,6 +47,22 @@ namespace butter.backend
             var r = methodInfo.Invoke(o, parameters);
         }
 
-
+        internal void IEL(string a)
+        {
+            VariableTypes.Add(a);
+        }
     }
+
+    public class Variable
+    {
+        public string Name;
+
+        internal static void AddVariableType(string a)
+        {
+            Backend b = new Backend();
+            b.IEL(a);
+        }
+    }
+
+
 }
