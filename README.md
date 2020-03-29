@@ -1,5 +1,5 @@
-**Butter: Scripting Language Engine *2.0.0***<br>
-https://www.nuget.org/packages/Butter/2.0.0
+**Butter: Scripting Language Engine *2.1.0***<br>
+https://www.nuget.org/packages/Butter/2.1.0
 <br>
 Create scripting languages easily with Butter!
 Butter is designed to handle the hardest part of making your own scripting language: the *syntax*.
@@ -10,4 +10,5 @@ Butter is designed to handle the hardest part of making your own scripting langu
 ***Project:TestForm*** - The test host to use Butter & the backend<br>
 <br>
 <br>
-Currently only for .NET Framework 4.8, anyone who uses Butter will have to downgrade it to other versions for use.
+Currently only for .NET Framework 4.8, anyone who uses Butter will have to downgrade it to other versions for use.<br>
+Video tutorial coming soon!
