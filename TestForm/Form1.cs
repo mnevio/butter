@@ -19,11 +19,23 @@ namespace TestForm
             InitializeComponent();
         }
 
+        public List<object> func(List<string> s)
+        {
+            MessageBox.Show("yo");
+            return new List<object>();
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
 
+            Language l = new Language();
+            l.Keywords.Add("a");
+            l.Operators.Add("-");
 
+            Func<List<string>, List<object>> SentFunc = func;
+            l.AddLineWithFunc(SentFunc, "K0-O0");
 
+            LanguageCompiler.ExecuteScriptWithFunc(l, "a-");
 
         }
     }
