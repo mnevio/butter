@@ -1,5 +1,5 @@
-**Butter: Scripting Language Engine *2.1.0***<br>
-https://www.nuget.org/packages/Butter/2.1.0<br>
+**Butter: Scripting Language Engine *3.0.1***<br>
+https://www.nuget.org/packages/Butter/3.0.1<br>
 https://www.nuget.org/packages/Butter.Backend<br>
 <br>
 Create scripting languages easily with Butter!
